@@ -6,10 +6,6 @@
 
 mute_check <- function(gradebook){
   check_vec <- c(t(gradebook[1:2,]))
-  if(grep("Muted", check_vec)[1]>1){
-    result <- TRUE
-  } else{
-    result <- FALSE
-  }
-  result
+  check <- grep("Muted", check_vec)
+  ifelse(length(check) == 0, FALSE, TRUE)
 }

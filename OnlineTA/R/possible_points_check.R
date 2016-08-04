@@ -6,10 +6,6 @@
 
 points_possible_check <- function(gradebook){
   check_vec <- c(t(gradebook[1:2,]))
-  if(grep("Points Possible", check_vec)[1]>1){
-    result <- TRUE
-  } else{
-    result <- FALSE
-  }
-  result
+  check <- grep("Points Possible", check_vec)
+  ifelse(length(check) == 0, FALSE, TRUE)
 }
