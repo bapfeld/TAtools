@@ -6,7 +6,7 @@ Authors@R: person("Brendan", "Apfeld", email = "brendan.apfeld@utexas.edu", role
 Description: Currently this package contains two tools: one to quickly determine
     on which lines of a dataframe are the test students, and a second to sort
     students if they have a choice of assignment topics. (one paragraph)
-Depends: R (>= 3.3.0)
+Depends: R (>= 3.3.0), dplyr(>=0.4.3)
 License: MIT
 LazyData: true
 Imports: dplyr (>= 0.4.3)
