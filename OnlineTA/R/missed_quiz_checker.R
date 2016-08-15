@@ -8,6 +8,7 @@
 #' @param assignment_column_name  The name of the column that contains the new assignment to test
 
 #' @return Outputs two files. The first is an updated version of the tracker file (or creates this if it does not already exist). The second is a file that contains only those entries that have increased their missed assignment number.
+#' @export
 
 track_students <- function(tracker_path, output_path, roster, current_gb, assignment_column_name){
   if (file.exists(tracker_path) == F){ #create track dataframe if file does not exist

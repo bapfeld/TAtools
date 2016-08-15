@@ -11,6 +11,7 @@
 #' @return Outputs two files to a new folder in the working directory: "FinalGradeSubmission.txt" is the file that can be uploaded to the registrar; "Final Grades - Letters and Numbers.csv" is a copy for TA/professor records that includes point totals next to the grade letters.  Folder created is named "Final Grades -- Registrar Formatting"
 #' @examples
 #' final.grades(gradebook.file, class="GOV312L", points=c(487, 462, 451, 430, 412, 400, 392, 386, 350, 330, 312))
+#' @export
 
 
 final.grades <- function(gradebook, class="GOV310L", non.enrolled=c("speede", "sm56684", "tm29778"), points=c(1:11), round = TRUE, drop_decimal = FALSE, full.out=TRUE){

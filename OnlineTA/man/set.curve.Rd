@@ -4,14 +4,10 @@
 \alias{set.curve}
 \title{Final Grade Calculator}
 \usage{
-\method{"McDS"}{For use with the McDaniel/Shaw version of Online310 only-
-  calculation and rounding are non-standard!  It takes a given top.score value
-  and calculates the number of students who would fall in each grade category.
-  "Maximum points" return is top score in class if default used, otherwise
-  returns inputted value.}(gradebook, method = c("McDS", "top points",
-  "curve-a", "curve-ab"), top.score = "max score", curve.a = 10,
-  curve.ab = 20, total.points = 500, grade.scale = c(93, 90, 87, 83, 80,
-  77, 73, 70, 67, 63, 60))
+set.curve(gradebook, method = c("McDS", "top points", "curve-a", "curve-ab"),
+  top.score = "max score", curve.a = 10, curve.ab = 20,
+  total.points = 500, grade.scale = c(93, 90, 87, 83, 80, 77, 73, 70, 67,
+  63, 60))
 }
 \arguments{
 \item{gradebook}{A dataframe of the final gradebook downloaded from Canvas.}
@@ -30,6 +26,14 @@
 }
 \value{
 List of 2. Dataframe with four columns: grade, scale, number, and percent, which refer to letter grade, point value at lower end of range, number of students who will receive that grade, and the percent of students who will receive that grade, respectively. Second item in list is the maximum number of points, which is both use and method dependent.
+
+"McDS" For use with the McDaniel-Shaw version of Online310 only- calculation and rounding are non-standard!  It takes a given top.score value and calculates the number of students who would fall in each grade category. "Maximum points" return is top score in class if default used, otherwise returns inputted value.
+
+"top points" Takes a given top.score value and calculate the number of students who would fall in each grade category. "Maximum points" return is top score in class if default used, otherwise returns inputted value.
+
+"curve-a" Takes the desired percentage of students who should receive an A and calculates what the top point value should become to achieve that value. Results may differ by a few students due to rounding. "Maximum points" return is the top point value.
+
+"curve-ab" Takes the desired percentage of students who should receive either an A or a B and calculates what the top point value should become to achieve that value. Results may differ by a few students due to rounding. "Maximum points" return is the top point value.
 }
 \description{
 This funciton has two primary purposes: first, to calculate a curve based on a desired percentage of students to receive either an A or an A or a B; second, to calculate the number of students who would receive a certain grade if top point value were adjusted.

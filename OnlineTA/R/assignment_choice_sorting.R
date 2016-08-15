@@ -8,6 +8,7 @@
 #' @return Outputs three .csv files to a new folder in the working directory named to avoid any duplication or overwriting of previous files: "duplicated responses.csv" indicates any students who have submitted more than one unique response to the qualtrics survey. Ignores misspelled names and identical submissions; "missing responses.csv" indicates any students who did not submit a qualtrics survey response; "all responses.csv" contains all students including duplicates and missing students.
 #' @examples
 #' assignment.choice(survey, roster, varnames=c("userid", "Q3", "Q5", "Q7"))
+#' @export
 assignment.choice <- function(survey.results, class.roster, varnames=c(), test.EIDs=c("speede", "sm56684", "tm29778")){
   survey <- subset(survey.results, select=varnames)[-1,]
   colnames(survey) <- c("EID", "Last Name", "First Name", "Essay Choice")

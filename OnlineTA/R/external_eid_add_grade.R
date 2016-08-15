@@ -8,6 +8,7 @@
 #' @param missing_as_zero  Logical for whether students not included in the EID vector should be assigned a 0. Default is TRUE.
 #' @param ignore_length   Default is FALSE. If TRUE, then function will not check the length of your EIDs. Checking length is useful if students entered their own EIDs. Default minimum is < 5 will throw a warning. It is possible for a student to have a 4 character EID.
 #' @return Outputs an updated gradebook file. Note: R will convert () into "."s.  This will result in a file that Canvas will not accept. Copy/paste the single column as appropriate in a program outside of R and upload the same file that was downloaded. Also automatically outputs a warning message reporting which assignment you updated.
+#' @export
 
 Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, point_value, missing_as_zero = TRUE, ignore_length=FALSE){
   q_vec <- levels(qualtrics_vector)

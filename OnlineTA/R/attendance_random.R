@@ -7,6 +7,7 @@
 #' @param student_count The number of students you would like returned for each class day
 #' @param ignore_list A vector of names that you want to exclude from the randomization
 #' @return Dataframe with three columns: Name, email address, and day of week they should be invited.
+#' @export
 
 
 random_attendance <- function(piazza_survey, days=c("Monday", "Wednesday"), student_count = 25, ignore_list = c()) {
