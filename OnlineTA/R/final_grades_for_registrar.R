@@ -19,21 +19,23 @@ final.grades <- function(gradebook, class="GOV310L", non.enrolled=c("speede", "s
   if (length(points)!=11) stop("Points vector not of length 11")
   if (drop_decimal == TRUE & round == TRUE) stop("drop_decimal and round cannot both be TRUE")
   #Are there any muted assignments? or the points possible row?
-  if(any(grepl("Muted", c(t(gradebook[1,])))) & any(grepl("Points Possible", gradebook[1:2,1]))){
-    top <- c(1,2)
-  }else{
-    if(any(grepl("Muted", c(t(gradebook[1,])))) | any(grepl("Points Possible", gradebook[1:2,1]))){
-      top <- 1
-    } else{
-      top <- (nrow(gradebook) + 1)
-    }
+  elim <- c()
+  if(mute_check(gradebook) == T){
+    elim <- 1
+  }
+  if(points_possible_check(gradebook) == T){
+    elim <- c(elim, 2)
   }
 
   #eliminate non-enrolled students and other top junk
-  elim <- test.student(EIDs=non.enrolled, df=gradebook)
-  gradebook <- gradebook[-c(top, elim),]
+  elim_stud <- test.student(EIDs=non.enrolled, df=gradebook)
+  gradebook <- gradebook[-c(elim, elim_stud),]
   #column for unique number
   gradebook$unique <- as.numeric(substr(gradebook$Section, 9, 13))
+  #if gb was imported using check.names=F, remove space and add period
+  names(gradebook) <- sub(" ", ".", names(gradebook))
+  #make sure final points is numeric
+  gradebook$Final.Points <- as.numeric(as.character(gradebook$Final.Points))
   ## Dealing with grades
   points <- sort(c(points, Inf, 0), decreasing=F)
   if(drop_decimal == TRUE){
