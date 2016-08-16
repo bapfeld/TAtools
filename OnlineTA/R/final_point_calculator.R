@@ -20,20 +20,21 @@
 
 set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curve-ab"), top.score="max score", curve.a=10, curve.ab=20, total.points=500, grade.scale=c(93, 90, 87, 83, 80, 77, 73, 70, 67, 63, 60)){
   ## Clean up data
-  #Are there any muted assignments? or the points possible row?
-  if(any(grepl("Muted", c(t(gradebook[1,])))) & any(grepl("Points Possible", gradebook[1:2,1]))){
-    top <- c(1,2)
-  }else{
-    if(any(grepl("Muted", c(t(gradebook[1,])))) | any(grepl("Points Possible", gradebook[1:2,1]))){
-      top <- 1
-    } else{
-      top <- (nrow(gradebook) + 1)
-    }
+  # remove unnecessary top lines from gb if present
+  elim <- c()
+  if(mute_check(gradebook) == T){
+    elim <- 1
+  }
+  if(points_possible_check(gradebook) == T){
+    elim <- c(elim, 2)
   }
   #eliminate non-enrolled students
-  elim <- test.student(df=gradebook)
-  gradebook <- gradebook[-c(top, elim),]
-  gradebook$Final.Points <- as.numeric(gradebook$Final.Points)
+  elim_stud <- test.student(df=gradebook)
+  gradebook <- gradebook[-c(elim, elim_stud),]
+  #if gb was imported using check.names=F, remove space and add period
+  names(gradebook) <- sub(" ", ".", names(gradebook))
+  #make sure final points is numeric
+  gradebook$Final.Points <- as.numeric(as.character(gradebook$Final.Points))
   ## Method 1 (very specific to McDaniel and Shaw)
   if(method=="McDS"){ #insert point value and calculate #/%s of students who fall into each grade using McDaniel Shaw method
     #is top score used or other number?
@@ -43,14 +44,14 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
       top <- top.score
     }
     stud <- nrow(gradebook)
-    out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T))/100, 0), Points.Level=(NA), Number=c(NA), Percent=c(NA))
+    out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T))/100, 0), Points.Level=NA, Number=NA, Percent=NA)
     out.1$Points.Level <- round((out.1$Scale*top), digits=0)
     for(i in 2:12){
       out.1$Number[i] <- sum(gradebook$Final.Points>=out.1$Points.Level[i] & gradebook$Final.Points < out.1$Points.Level[i-1])
     }
     out.1$Number[1] <- sum(gradebook$Final.Points >= out.1$Points.Level[1])
     out.1$Percent <- (out.1$Number/stud)*100
-    list(out.1, "Max Points"=max(gradebook$Final.Points))
+    list(out.1, "Max Points" = top)
   } #end method "McDS"
   ## Method 2
   else if(method=="top points"){ #insert point value and calculate #/%s of students who fall into each grade
@@ -68,7 +69,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     }
     out.1$Number[1] <- sum(gradebook$calc >= out.1$Scale[1])
     out.1$Percent <- (out.1$Number/stud)*100
-    list(out.1, "Max Points"=max(gradebook$Final.Points))
+    list(out.1, "Max Points" = top)
   } #end method "top points"
   ## Method 3
   else if (method=="curve-a"){ #what is curve level for desired % of A's
@@ -77,7 +78,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     gradebook$calc <- gradebook$Final.Points/trial
     a.level <- sort((grade.scale-.5)/100, decreasing=T)[2]
     current.a <- sum(gradebook$calc>=a.level)
-    if(current.a >= num.stud) stop ("At least inputted % of students have an A with no curve")
+    if(current.a >= num.stud) stop (paste("At least", curve.a, "% of students have an A with no curve", sep = " "))
     while(sum(gradebook$calc>=a.level)<num.stud){
       gradebook$calc <- gradebook$Final.Points/trial
       trial <- trial-1
@@ -88,7 +89,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     }
     out.1$Number[1] <- sum(gradebook$calc >= out.1$Scale[1])
     out.1$Percent <- (out.1$Number/nrow(gradebook))*100
-    list(out.1, "Max Points"=trial+1)
+    list(out.1, "Max Points" = trial+1)
   } #end curva-a method
   ## Method 4
   else if (method=="curve-ab"){ #what is curve level for desired % of A's & B's
@@ -97,7 +98,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     gradebook$calc <- gradebook$Final.Points/trial
     ab.level <- sort((grade.scale-.5)/100, decreasing=T)[5]
     current.ab <- sum(gradebook$calc>=ab.level)
-    if(current.ab >= num.stud) stop ("At least inputted % of students have an A or a B with no curve")
+    if(current.ab >= num.stud) stop (paste("At least", curve-ab,  "% of students have an A or a B with no curve", sep = " "))
     while(sum(gradebook$calc>=ab.level)<num.stud){
       gradebook$calc <- gradebook$Final.Points/trial
       trial <- trial-1
@@ -108,6 +109,6 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     }
     out.1$Number[1] <- sum(gradebook$calc >= out.1$Scale[1])
     out.1$Percent <- (out.1$Number/nrow(gradebook))*100
-    list(out.1, "Max Points"=trial+1)
+    list(out.1, "Max Points" = trial+1)
   } #end curva-ab method
 }
