@@ -78,7 +78,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     gradebook$calc <- gradebook$Final.Points/trial
     a.level <- sort((grade.scale-.5)/100, decreasing=T)[2]
     current.a <- sum(gradebook$calc>=a.level)
-    if(current.a >= num.stud) stop (paste("At least", curve.a, "% of students have an A with no curve", sep = " "))
+    if(current.a >= num.stud) stop (paste("At least", curve.a*100, "% of students have an A with no curve", sep = " "))
     while(sum(gradebook$calc>=a.level)<num.stud){
       gradebook$calc <- gradebook$Final.Points/trial
       trial <- trial-1
@@ -98,7 +98,7 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     gradebook$calc <- gradebook$Final.Points/trial
     ab.level <- sort((grade.scale-.5)/100, decreasing=T)[5]
     current.ab <- sum(gradebook$calc>=ab.level)
-    if(current.ab >= num.stud) stop (paste("At least", curve-ab,  "% of students have an A or a B with no curve", sep = " "))
+    if(current.ab >= num.stud) stop (paste("At least", curve-ab*100,  "% of students have an A or a B with no curve", sep = " "))
     while(sum(gradebook$calc>=ab.level)<num.stud){
       gradebook$calc <- gradebook$Final.Points/trial
       trial <- trial-1
