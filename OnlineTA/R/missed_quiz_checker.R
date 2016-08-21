@@ -8,6 +8,7 @@
 #' @param assignment_column_name  The name of the column that contains the new assignment to test
 
 #' @return Outputs two files. The first is an updated version of the tracker file (or creates this if it does not already exist). The second is a file that contains only those entries that have increased their missed assignment number.
+#' @return Optionally, will output a third file if the function detects that your gradebook file contains new students not included in the tracker file.
 #' @export
 
 track_students <- function(tracker_path, output_path, roster, current_gb, assignment_column_name){
@@ -19,20 +20,29 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
     track <- read.csv(file = tracker_path, header = T, sep = ",")
   }
   track$previous_missed <- track$current_missed #update current missed
-  if(any(grepl("Muted", c(t(current_gb[1,])))) & any(grepl("Points Possible", current_gb[1:2,1]))){ #remove mute/points possile rows
-    top <- c(1,2)
-  }else{
-    if(any(grepl("Muted", c(t(current_gb[1,])))) | any(grepl("Points Possible", current_gb[1:2,1]))){
-      top <- 1
-    } else{
-      top <- (nrow(current_gb) + 1)
-    }
+  # remove unnecessary top lines from gb if present
+  elim <- c()
+  if(mute_check(current_gb) == T){
+    elim <- 1
   }
-  current_gb <- current_gb[-top,]
+  if(points_possible_check(current_gb) == T){
+    elim <- c(elim, 2)
+  }
+  elim_stud <- test.student(df=current_gb)
+  current_gb <- current_gb[-c(elim, elim_stud),]
+
   col_number <- grep(assignment_column_name, names(current_gb)) #translate assignment name to column number
   current_gb[,col_number] <- as.numeric(as.character(current_gb[,col_number])) #make sure that desired column is numeric
   gb_eid <- names(current_gb)[3] #get column name on eid column in gb
-  track <- dplyr::left_join(track, current_gb[,c(1:5, col_number)], by = c("EID" = gb_eid)) #merge data frames
+  track <- dplyr::full_join(track, current_gb[,c(1:5, col_number)], by = c("EID" = gb_eid)) #merge data frames
+  new_stud <- which(is.na(track$previous_missed))
+  if(length(new_stud) > 0 & length(new_stud) < nrow(track)){
+    track$previous_missed[new_stud] <- 0
+    new_stud_df <- track[new_stud,1:4]
+    totl_missed_est <- grep(substr(assignment_column_name, 1, 3), names(track))
+    warning(paste("New students detected! List of students will be written to ", getwd()),"\nYou will need to edit the tracking file by hand to accurately reflect missed assignments for these students.", "\nI estimate there are ", paste(totl_missed_est, "missed assignments, but this may not be correct.", sep = " "))
+    write.csv(new_stud_df, file = "New_Students_Since_Last_Assignment.csv")
+  }
   t_col_num <- as.numeric(length(names(track)))
   track$current_missed[is.na(track[t_col_num])==T] <- track$current_missed[is.na(track[t_col_num])==T] + 1
   track <- track[,1:5]
@@ -40,3 +50,5 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
   write.csv(track, file = tracker_path)
   write.csv(new_missed, file = output_path)
 }
+
+# could re-write to include option for counting 0s instead of NAs since that's what you would expect for non-quiz activities

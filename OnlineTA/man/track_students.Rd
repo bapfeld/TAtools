@@ -20,6 +20,8 @@ track_students(tracker_path, output_path, roster, current_gb,
 }
 \value{
 Outputs two files. The first is an updated version of the tracker file (or creates this if it does not already exist). The second is a file that contains only those entries that have increased their missed assignment number.
+
+Optionally, will output a third file if the function detects that your gradebook file contains new students not included in the tracker file.
 }
 \description{
 Use this function to track students who do not complete assignments. If you have a series of similar assignments in a given category, you can use this to identify students who are struggling before it is too late for them to save their grade.
