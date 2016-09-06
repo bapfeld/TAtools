@@ -18,6 +18,7 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
     track$previous_missed <- 0
   } else { #load track file if it exists
     track <- read.csv(file = tracker_path, header = T, sep = ",")
+    track <- track[, 2:6]
   }
   track$previous_missed <- track$current_missed #update current missed
   # remove unnecessary top lines from gb if present
