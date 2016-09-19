@@ -20,8 +20,9 @@ assignment.choice <- function(survey.results, class.roster, varnames=c(), test.E
   } else{
     top <- 1
   }
-  roster <- subset(roster, select=c(SIS.User.ID, ID, Student))
-  elim <- test.student(EIDs=test.EIDs, df=roster)
+  roster <- roster %>%
+    select(`SIS User ID`, ID, Student)
+  elim <- test.student(EIDs = test.EIDs, df = roster)
   roster <- roster[-c(top, elim),]
   colnames(roster) <- c("EID", "ID", "Student")
   #Now, merge the two of them

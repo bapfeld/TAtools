@@ -4,7 +4,7 @@
 #' @param gb  A dataframe of a gradebook file from Canvas. Assumes that it was imported with option check.names = F
 #' @param scantron  A dataframe of the scanned scores from scanning servies. Should be the CSV listed under the "file to upload grades to Canvas or Blackboard" or something like that.
 #' @param assignment_name  The name of the assignment in the gradebook that will receive the grade (e.g. "Exam 1"). Should be formatted exactly as it appears in the dataframe, but can be a partial match (assuming no overlap with other names)
-#' @return Outputs an updated gradebook file. The muted assignments and points possible rows will be removed from top if present in original gradebook. Will also write NA to students who have no grade for the assignment. If a grade is already entered for that assignment, the function will not overwrite. This means that if you give a test where students had the option to take it online or in person, it will preserve the online grades and just merge in the paper scantron ones. Note: This function assumes you have used the "check.names = F" option in importing your gradebook csv so that your EID column is titled "SIS User ID".
+#' @return Outputs an updated gradebook file. The muted assignments and points possible rows will be removed from top if present in original gradebook. Will also write NA to students who have no grade for the assignment. If a grade is already entered for that assignment, the function will not overwrite. This means that if you give a test where students had the option to take it online or in person, it will preserve the online grades and just merge in the paper scantron ones.
 #' @export
 
 scantron_grade <- function(gb, scantron, assignment_name){
@@ -25,7 +25,7 @@ scantron_grade <- function(gb, scantron, assignment_name){
   }
   # remove unnecessary lines from scantron if present
   scantron <- scantron %>%
-    filter(Last.Name != "Total Records Read") %>%
+    filter(`Last Name` != "Total Records Read") %>%
     select(EID, Score)
   # make compatible to merge
   names(scantron) <- c("SIS User ID", "new_val")

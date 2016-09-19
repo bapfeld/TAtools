@@ -34,12 +34,12 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
   #if gb was imported using check.names=F, remove space and add period
   names(gradebook) <- sub(" ", ".", names(gradebook))
   #make sure final points is numeric
-  gradebook$Final.Points <- as.numeric(as.character(gradebook$Final.Points))
+  gradebook$`Final Points` <- as.numeric(as.character(gradebook$`Final Points`))
   ## Method 1 (very specific to McDaniel and Shaw)
   if(method=="McDS"){ #insert point value and calculate #/%s of students who fall into each grade using McDaniel Shaw method
     #is top score used or other number?
     if(top.score==c("max score")){
-      top <- max(gradebook$Final.Points)
+      top <- max(gradebook$`Final Points`)
     } else {
       top <- top.score
     }
@@ -47,9 +47,9 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
     out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T))/100, 0), Points.Level=NA, Number=NA, Percent=NA)
     out.1$Points.Level <- round((out.1$Scale*top), digits=0)
     for(i in 2:12){
-      out.1$Number[i] <- sum(gradebook$Final.Points>=out.1$Points.Level[i] & gradebook$Final.Points < out.1$Points.Level[i-1])
+      out.1$Number[i] <- sum(gradebook$`Final Points`>=out.1$Points.Level[i] & gradebook$`Final Points` < out.1$Points.Level[i-1])
     }
-    out.1$Number[1] <- sum(gradebook$Final.Points >= out.1$Points.Level[1])
+    out.1$Number[1] <- sum(gradebook$`Final Points` >= out.1$Points.Level[1])
     out.1$Percent <- (out.1$Number/stud)*100
     list(out.1, "Max Points" = top)
   } #end method "McDS"
@@ -57,12 +57,12 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
   else if(method=="top points"){ #insert point value and calculate #/%s of students who fall into each grade
     #is top score used or other number?
     if(top.score==c("max score")){
-      top <- max(gradebook$Final.Points)
+      top <- max(gradebook$`Final Points`)
     } else {
       top <- top.score
     }
     stud <- nrow(gradebook)
-    gradebook$calc <- gradebook$Final.Points/top
+    gradebook$calc <- gradebook$`Final Points`/top
     out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T)-.5)/100, 0), Number=c(NA), Percent=c(NA))
     for(i in 2:12){
       out.1$Number[i] <- sum(gradebook$calc>=out.1$Scale[i] & gradebook$calc < out.1$Scale[i-1])
@@ -75,12 +75,12 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
   else if (method=="curve-a"){ #what is curve level for desired % of A's
     num.stud <- ceiling(nrow(gradebook)*(curve.a/100))
     trial <- total.points
-    gradebook$calc <- gradebook$Final.Points/trial
+    gradebook$calc <- gradebook$`Final Points`/trial
     a.level <- sort((grade.scale-.5)/100, decreasing=T)[2]
     current.a <- sum(gradebook$calc>=a.level)
     if(current.a >= num.stud) stop (paste("At least", curve.a*100, "% of students have an A with no curve", sep = " "))
     while(sum(gradebook$calc>=a.level)<num.stud){
-      gradebook$calc <- gradebook$Final.Points/trial
+      gradebook$calc <- gradebook$`Final Points`/trial
       trial <- trial-1
     }
     out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T)-.5)/100, 0), Number=c(NA), Percent=c(NA))
@@ -95,12 +95,12 @@ set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curv
   else if (method=="curve-ab"){ #what is curve level for desired % of A's & B's
     num.stud <- ceiling(nrow(gradebook)*(curve.ab/100))
     trial <- total.points
-    gradebook$calc <- gradebook$Final.Points/trial
+    gradebook$calc <- gradebook$`Final Points`/trial
     ab.level <- sort((grade.scale-.5)/100, decreasing=T)[5]
     current.ab <- sum(gradebook$calc>=ab.level)
     if(current.ab >= num.stud) stop (paste("At least", curve-ab*100,  "% of students have an A or a B with no curve", sep = " "))
     while(sum(gradebook$calc>=ab.level)<num.stud){
-      gradebook$calc <- gradebook$Final.Points/trial
+      gradebook$calc <- gradebook$`Final Points`/trial
       trial <- trial-1
     }
     out.1 <- data.frame(Grade=c("A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"), Scale=c((sort(grade.scale, decreasing=T)-.5)/100, 0), Number=c(NA), Percent=c(NA))

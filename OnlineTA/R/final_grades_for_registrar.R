@@ -35,19 +35,19 @@ final.grades <- function(gradebook, class="GOV310L", non.enrolled=c("speede", "s
   #if gb was imported using check.names=F, remove space and add period
   names(gradebook) <- sub(" ", ".", names(gradebook))
   #make sure final points is numeric
-  gradebook$Final.Points <- as.numeric(as.character(gradebook$Final.Points))
+  gradebook$`Final Points` <- as.numeric(as.character(gradebook$`Final Points`))
   ## Dealing with grades
   points <- sort(c(points, Inf, 0), decreasing=F)
   if(drop_decimal == TRUE){
-    gradebook$Grade_Based_on_Points <- as.numeric(substr(gradebook$Final.Points, 1,3))
+    gradebook$Grade_Based_on_Points <- as.numeric(substr(gradebook$`Final Points`, 1,3))
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = F)
   }
 
   if(round == TRUE){
-    gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$Final.Points))
+    gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$`Final Points`))
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = T)
   } else{
-    gradebook$Grade_Based_on_Points <- as.numeric(gradebook$Final.Points)
+    gradebook$Grade_Based_on_Points <- as.numeric(gradebook$`Final Points`)
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = F)
   }
 
@@ -58,9 +58,9 @@ final.grades <- function(gradebook, class="GOV310L", non.enrolled=c("speede", "s
   if (full.out==TRUE){
     grades <- gradebook
   } else{
-    grades <- subset(gradebook, select=c("Student", "SIS.User.ID", "letter", "absences", "remarks", "unique", "Final.Points"))
+    grades <- subset(gradebook, select=c("Student", "SIS User ID", "letter", "absences", "remarks", "unique", "Final Points"))
   }
-  gradebook <- subset(gradebook, select=c("Student", "SIS.User.ID", "letter", "absences", "remarks", "unique"))
+  gradebook <- subset(gradebook, select=c("Student", "SIS User ID", "letter", "absences", "remarks", "unique"))
   #rename to match registrar requirements
   colnames(gradebook)<- c("Name", "EID", "Grade", "Absences", "Remarks", "Unique")
   #export the results

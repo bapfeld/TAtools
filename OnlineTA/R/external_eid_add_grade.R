@@ -36,7 +36,7 @@ Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, po
     warning("It looks like you have space(s) in your vector of EIDs. You must remove these for this function to work.", immediate. = TRUE)
     stop
   }
-  stud_points <- match(q_vec, gradebook$SIS.User.ID)
+  stud_points <- match(q_vec, gradebook$`SIS User ID`)
   gradebook[stud_points,col_num] <- point_value
   if (missing_as_zero == TRUE){
     gradebook[-stud_points,col_num] <- 0

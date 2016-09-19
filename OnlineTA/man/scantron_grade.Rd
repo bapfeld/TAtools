@@ -14,7 +14,7 @@ scantron_grade(gb, scantron, assignment_name)
 \item{assignment_name}{The name of the assignment in the gradebook that will receive the grade (e.g. "Exam 1"). Should be formatted exactly as it appears in the dataframe, but can be a partial match (assuming no overlap with other names)}
 }
 \value{
-Outputs an updated gradebook file. The muted assignments and points possible rows will be removed from top if present in original gradebook. Will also write NA to students who have no grade for the assignment. If a grade is already entered for that assignment, the function will not overwrite. This means that if you give a test where students had the option to take it online or in person, it will preserve the online grades and just merge in the paper scantron ones. Note: This function assumes you have used the "check.names = F" option in importing your gradebook csv so that your EID column is titled "SIS User ID".
+Outputs an updated gradebook file. The muted assignments and points possible rows will be removed from top if present in original gradebook. Will also write NA to students who have no grade for the assignment. If a grade is already entered for that assignment, the function will not overwrite. This means that if you give a test where students had the option to take it online or in person, it will preserve the online grades and just merge in the paper scantron ones.
 }
 \description{
 Use this function to add grades in a canvas gradebook for an assignment based on a CSV file you download from scanning services.
