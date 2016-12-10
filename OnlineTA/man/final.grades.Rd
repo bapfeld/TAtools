@@ -5,8 +5,9 @@
 \title{Registrar Formatted Final Grades}
 \usage{
 final.grades(gradebook, class = "GOV310L", non.enrolled = c("speede",
-  "sm56684", "tm29778"), points = c(1:11), round = TRUE,
-  drop_decimal = FALSE, full.out = TRUE)
+  "sm56684", "tm29778"), points = c(94, 90, 87, 84, 80, 77, 74, 70, 67, 64,
+  60), round = c("normal", "floor"), full.out = TRUE, final = c("points",
+  "score"))
 }
 \arguments{
 \item{gradebook}{A dataframe of the final gradebook downloaded from Canvas.}
@@ -17,11 +18,11 @@ final.grades(gradebook, class = "GOV310L", non.enrolled = c("speede",
 
 \item{points}{A vector of length 11 indicating the LOWER point values for each grade break A through D-.  Use only integers- the function will take care of rounding. Breaks do not need to be any particular order.}
 
-\item{round}{Should grades be rounded? If TRUE, then the final point total rounds according to standard mathematical rules and assigns letters based on that rounded score. If FALSE, then no rounding is performed.}
-
-\item{drop_decimal}{Logical depending on whether final grades should be based on only the whole number and drop any decimal values. I.e. an 88.97 is treated as an 88 and not an 89. This is an unusual setting. Defaults to FALSE. If set to TRUE, round must be FALSE.}
+\item{round}{Should grades be rounded? If set to "normal", then the final point total rounds according to standard mathematical rules and assigns letters based on that rounded score. If set to "floor," then final grades are based on only the whole number. I.e. an 88.97 is treated as an 88 and not an 89.}
 
 \item{full.out}{Should the TA/professor copy outputted include the entire gradebook or only the registrar version plus final points? Default is TRUE.}
+
+\item{final}{Should the "Final Points" or "Final Score" column be used to assign letter grades? Set to either "points" or "score".}
 }
 \value{
 Outputs two files to a new folder in the working directory: "FinalGradeSubmission.txt" is the file that can be uploaded to the registrar; "Final Grades - Letters and Numbers.csv" is a copy for TA/professor records that includes point totals next to the grade letters.  Folder created is named "Final Grades -- Registrar Formatting"
@@ -30,6 +31,6 @@ Outputs two files to a new folder in the working directory: "FinalGradeSubmissio
 Use this function if you need to adjust final grades based on an alternative point scheme. Useful for the Shaw/McDaniel version of 310.
 }
 \examples{
-final.grades(gradebook.file, class="GOV312L", points=c(487, 462, 451, 430, 412, 400, 392, 386, 350, 330, 312))
+final.grades(gradebook.file, class="GOV312L", points=c(487, 462, 451, 430, 412, 400, 392, 386, 350, 330, 312), final = "points")
 }
 
