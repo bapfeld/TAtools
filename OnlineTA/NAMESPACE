@@ -3,6 +3,7 @@
 export(Offline.grade)
 export(assignment.choice)
 export(final.grades)
+export(gradebook_clean)
 export(random_attendance)
 export(scantron_grade)
 export(set.curve)

@@ -7,7 +7,7 @@
 scantron_grade(gb, scantron, assignment_name)
 }
 \arguments{
-\item{gb}{A dataframe of a gradebook file from Canvas. Assumes that it was imported with option check.names = F}
+\item{gb}{A dataframe of a gradebook file from Canvas.}
 
 \item{scantron}{A dataframe of the scanned scores from scanning servies. Should be the CSV listed under the "file to upload grades to Canvas or Blackboard" or something like that.}
 
