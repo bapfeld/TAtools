@@ -6,8 +6,8 @@
 \usage{
 final.grades(gradebook, class = "GOV310L", non.enrolled = c("speede",
   "sm56684", "tm29778"), points = c(94, 90, 87, 84, 80, 77, 74, 70, 67, 64,
-  60), round = c("normal", "floor"), full.out = TRUE, final = c("points",
-  "score"))
+  60), round = TRUE, drop_decimal = FALSE, full.out = TRUE,
+  final = c("points", "score"))
 }
 \arguments{
 \item{gradebook}{A dataframe of the final gradebook downloaded from Canvas.}

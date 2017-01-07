@@ -72,6 +72,7 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
   colnames(gradebook)<- c("Name", "EID", "Grade", "Absences", "Remarks", "Unique")
   #export the results
   dir.create("Final Grades -- Registrar Formatting")
-  write.table(gradebook, file = paste(getwd(), "Final Grades -- Registrar Formatting", "FinalGradeSubmission.txt", sep="/"), sep = "\t", row.names = F, na = "")
+  write.table(gradebook, file = paste(getwd(), "Final Grades -- Registrar Formatting", "FinalGradeSubmission.txt", sep="/"), sep = "\t", row.names = F, na = "", quote = F, eol = "\r\n")
   write.csv(grades, file = paste(getwd(), "Final Grades -- Registrar Formatting", "Final Grades - Letters and Numbers.csv", sep = "/"))
 }
+
