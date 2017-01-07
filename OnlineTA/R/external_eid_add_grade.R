@@ -17,15 +17,8 @@ Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, po
   }
   col_num <- assignment_col_number
   stud.row <- c()
-  if(mute_check(gradebook[1:2,])==TRUE){
-    top <- ifelse(points_possible_check(gradebook[1:2,])==TRUE, 2, 1)
-    warning("Rows removed from top of gradebook file")
-  }else{
-    top <- c()
-  }
-  if(top==2){top <- c(1:2)}
-  gradebook <- gradebook[-top,]
-  gradebook[,col_num] <- as.numeric(as.character(gradebook[,col_num]))
+  clean_gradebook <- gradebook_clean(gradebook, non_enrolled = c("speede", "sm56684", "tm29778"))
+  gradebook <- clean_gradebook[[1]]
   if(any(sapply(q_vec, nchar) < 4)){
     warning("It looks like you have EIDs that are too short. Please double check the values in the vector of EIDs you are using.  If you are certain there are no errors, you may set the ignore_length option to TRUE", immediate. = TRUE)
     if(ignore_length==FALSE){

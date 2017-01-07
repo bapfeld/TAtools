@@ -12,18 +12,10 @@
 assignment.choice <- function(survey.results, class.roster, varnames=c(), test.EIDs=c("speede", "sm56684", "tm29778")){
   survey <- subset(survey.results, select=varnames)[-1,]
   colnames(survey) <- c("EID", "Last Name", "First Name", "Essay Choice")
-  roster <- class.roster
-  #Are there any muted assignments?
-  mute <- c(t(roster[1,]))
-  if(grep("Muted", mute)[1]>1){
-    top <- c(1,2)
-  } else{
-    top <- 1
-  }
+  roster_clean <- gradebook_clean(class.roster, non_enrolled = test.EIDs)
+  roster <- roster_clean[[1]]
   roster <- roster %>%
     select(`SIS User ID`, ID, Student)
-  elim <- test.student(EIDs = test.EIDs, df = roster)
-  roster <- roster[-c(top, elim),]
   colnames(roster) <- c("EID", "ID", "Student")
   #Now, merge the two of them
   merged.data <- merge(roster, survey, by="EID", all.x=T)

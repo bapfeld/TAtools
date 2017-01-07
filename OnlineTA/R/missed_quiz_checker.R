@@ -21,19 +21,12 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
     track <- track[, 2:6]
   }
   track$previous_missed <- track$current_missed #update current missed
-  # remove unnecessary top lines from gb if present
-  elim <- c()
-  if(mute_check(current_gb) == T){
-    elim <- 1
-  }
-  if(points_possible_check(current_gb) == T){
-    elim <- c(elim, 2)
-  }
-  elim_stud <- test.student(df=current_gb)
-  current_gb <- current_gb[-c(elim, elim_stud),]
+  # clean the gb
+  clean_gb <- gradebook_clean(current_gb, non_enrolled = c("speede", "sm56684", "tm29778"))
+  current_gb <- clean_gb[[1]]
 
   col_number <- grep(assignment_column_name, names(current_gb)) #translate assignment name to column number
-  current_gb[,col_number] <- as.numeric(as.character(current_gb[,col_number])) #make sure that desired column is numeric
+
   gb_eid <- names(current_gb)[3] #get column name on eid column in gb
   track <- dplyr::full_join(track, current_gb[,c(1:5, col_number)], by = c("EID" = gb_eid)) #merge data frames
   new_stud <- which(is.na(track$previous_missed))

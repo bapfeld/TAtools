@@ -20,21 +20,8 @@
 
 set.curve <- function(gradebook, method=c("McDS", "top points", "curve-a", "curve-ab"), top.score="max score", curve.a=10, curve.ab=20, total.points=500, grade.scale=c(93, 90, 87, 83, 80, 77, 73, 70, 67, 63, 60)){
   ## Clean up data
-  # remove unnecessary top lines from gb if present
-  elim <- c()
-  if(mute_check(gradebook) == T){
-    elim <- 1
-  }
-  if(points_possible_check(gradebook) == T){
-    elim <- c(elim, 2)
-  }
-  #eliminate non-enrolled students
-  elim_stud <- test.student(df=gradebook)
-  gradebook <- gradebook[-c(elim, elim_stud),]
-  #if gb was imported using check.names=F, remove space and add period
-  names(gradebook) <- sub(" ", ".", names(gradebook))
-  #make sure final points is numeric
-  gradebook$`Final Points` <- as.numeric(as.character(gradebook$`Final Points`))
+  clean_gb <- gradebook_clean(gradebook, non_enrolled = c("speede", "sm56684", "tm29778"))
+
   ## Method 1 (very specific to McDaniel and Shaw)
   if(method=="McDS"){ #insert point value and calculate #/%s of students who fall into each grade using McDaniel Shaw method
     #is top score used or other number?
