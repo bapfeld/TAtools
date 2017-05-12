@@ -7,14 +7,14 @@
 set.curve(gradebook, method = c("McDS", "top points", "curve-a", "curve-ab"),
   top.score = "max score", curve.a = 10, curve.ab = 20,
   total.points = 500, grade.scale = c(93, 90, 87, 83, 80, 77, 73, 70, 67,
-  63, 60))
+  63, 60), non_enrolled = c("speede", "sm56684", "tm29778"))
 }
 \arguments{
 \item{gradebook}{A dataframe of the final gradebook downloaded from Canvas.}
 
 \item{method}{Four methods are supported: "McDS", "top points", "curve-a", and "curve-ab".  See Methods below for details.}
 
-\item{top.score}{What value should be tested for McDS and top points methods. Default is maximum score in gradebook.}
+\item{top.score}{What value should be tested for McDS and top points methods. Default \code{"max score"} will give maximum score in gradebook. Otherwise, specify an integer max score.}
 
 \item{curve.a}{Percentage of students who should receive an A.  Must be input as an integer. For use with curve-a method only.}
 
