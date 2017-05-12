@@ -26,4 +26,3 @@ Outputs an updated gradebook file. Note: R will convert () into "."s.  This will
 \description{
 Use this function to add grades in a canvas gradebook for a complete/incomplete assignment based on a list of EIDs.
 }
-

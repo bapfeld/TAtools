@@ -20,4 +20,3 @@ This function identifies which rows in a data frame contain test students.  Requ
 \examples{
 test.student.search.func()
 }
-

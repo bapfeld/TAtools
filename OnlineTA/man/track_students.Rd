@@ -26,4 +26,3 @@ Optionally, will output a third file if the function detects that your gradebook
 \description{
 Use this function to track students who do not complete assignments. If you have a series of similar assignments in a given category, you can use this to identify students who are struggling before it is too late for them to save their grade.
 }
-

@@ -12,4 +12,3 @@ maybe_as_numeric(v)
 \description{
 Internal function used to convert columns to numbers when they should be
 }
-

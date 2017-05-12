@@ -25,4 +25,3 @@ Use this function if you have an assignment in which students had a choice (e.g.
 \examples{
 assignment.choice(survey, roster, varnames=c("userid", "Q3", "Q5", "Q7"))
 }
-

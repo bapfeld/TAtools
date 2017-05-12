@@ -6,8 +6,7 @@
 \usage{
 final.grades(gradebook, class = "GOV310L", non.enrolled = c("speede",
   "sm56684", "tm29778"), points = c(94, 90, 87, 84, 80, 77, 74, 70, 67, 64,
-  60), round = TRUE, drop_decimal = FALSE, full.out = TRUE,
-  final = c("points", "score"))
+  60), round = TRUE, full.out = TRUE, final = c("points", "score"))
 }
 \arguments{
 \item{gradebook}{A dataframe of the final gradebook downloaded from Canvas.}
@@ -33,4 +32,3 @@ Use this function if you need to adjust final grades based on an alternative poi
 \examples{
 final.grades(gradebook.file, class="GOV312L", points=c(487, 462, 451, 430, 412, 400, 392, 386, 350, 330, 312), final = "points")
 }
-

@@ -14,4 +14,3 @@ gradebook_clean(gradebook, non_enrolled = c())
 \description{
 Clean up a gradebook all in one fell swoop
 }
-

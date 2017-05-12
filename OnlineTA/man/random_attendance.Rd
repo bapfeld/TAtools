@@ -25,4 +25,3 @@ Use this function to randomize students to invite to the studio for lecture.
 \details{
 This function facilitates randomizing studio attendance and invititations for the online class. Create a poll in piazza asking students to complete it in order to add their name to the attendance drawing list.  (The poll can have a single option - "Yes, I'd like to attend")  Download the results of that poll and open the file in R.  Then process it using this function, which will place a CSV on your desktop with a list of 50 names, 25 for each day of the week, along with the student's email address.  This should facilitate contacting the students with directions for attending the studio.
 }
-

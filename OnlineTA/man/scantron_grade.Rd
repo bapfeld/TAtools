@@ -19,4 +19,3 @@ Outputs an updated gradebook file. The muted assignments and points possible row
 \description{
 Use this function to add grades in a canvas gradebook for an assignment based on a CSV file you download from scanning services.
 }
-

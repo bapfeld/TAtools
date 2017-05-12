@@ -42,11 +42,12 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
 
    ## Dealing with grades
   points <- sort(c(points, Inf, 0), decreasing=F)
+  # both options are redundant in rounding - this is NOT a problem
   if(round == TRUE){
-    gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$`Final Points`))
+    gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$final_num))
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = T)
   } else{
-    gradebook$Grade_Based_on_Points <- as.numeric(gradebook$`Final Points`)
+    gradebook$Grade_Based_on_Points <- floor(as.numeric(gradebook$final_num))
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = F)
   }
 
@@ -58,9 +59,11 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
   if (full.out == TRUE){
     grades <- gradebook
   } else if(final %in% c("points", "point", "Points", "Point", "p", "P")){
-    grades <- subset(gradebook, select = c("Student", "SIS User ID", "letter", "absences", "remarks", "unique", "Final Points"))
+    grades <- subset(gradebook, select = c("Student", "SIS User ID", "letter", "absences", "remarks", "unique", "final_num"))
+    names(grades)[7] <- "Final Points"
   } else{
-    grades <- subset(gradebook, select = c("Student", "SIS User ID", "letter", "absences", "remarks", "unique", "Final.Score"))
+    grades <- subset(gradebook, select = c("Student", "SIS User ID", "letter", "absences", "remarks", "unique", "final_num"))
+    names(grades)[7] <- "Final Score"
   }
   gradebook <- subset(gradebook, select=c("Student", "SIS User ID", "letter", "absences", "remarks", "unique"))
   #rename to match registrar requirements

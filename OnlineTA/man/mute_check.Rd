@@ -15,4 +15,3 @@ Outputs True/False value
 \description{
 Internal use function to test whether any grades are muted in a given gradebook input
 }
-

@@ -42,4 +42,3 @@ This funciton has two primary purposes: first, to calculate a curve based on a d
 set.curve(gradebook.file, method=c("top points"), top.score="475")
 set.curve(gradebook.file, method=c("curve-ab"), curve.ab=18, total.points=450)
 }
-

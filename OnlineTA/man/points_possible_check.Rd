@@ -15,4 +15,3 @@ Outputs True/False value
 \description{
 Internal use function to test whether total points possible row is present in a given gradebook input
 }
-
