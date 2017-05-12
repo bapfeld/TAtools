@@ -33,9 +33,9 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
 
   # Creating a vector of scores based on points or score
   if(final %in% c("points", "point", "Points", "Point", "p", "P")){
-    gradebook$final_num <- gradebook$`Final Points`
+    gradebook$final_num <- as.numeric(as.character(gradebook$`Final Points`))
   }else if(final %in% c("score", "scores", "Score", "score", "S", "s")){
-    gradebook$final_num <- gradebook$`Final Score`
+    gradebook$final_num <- as.numeric(as.character(gradebook$`Final Score`))
   }else{
     stop("You must set parameter 'final' to either 'points' or 'score' to indicate which column to use to assign final grades.\n Final grades not exported.")
   }
@@ -44,10 +44,10 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
   points <- sort(c(points, Inf, 0), decreasing=F)
   # both options are redundant in rounding - this is NOT a problem
   if(round == TRUE){
-    gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$final_num))
+    gradebook$Grade_Based_on_Points <- round(gradebook$final_num)
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = T)
   } else{
-    gradebook$Grade_Based_on_Points <- floor(as.numeric(gradebook$final_num))
+    gradebook$Grade_Based_on_Points <- floor(gradebook$final_num)
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = F)
   }
 
