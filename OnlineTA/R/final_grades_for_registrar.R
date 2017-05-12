@@ -13,7 +13,7 @@
 #' final.grades(gradebook.file, class="GOV312L", points=c(487, 462, 451, 430, 412, 400, 392, 386, 350, 330, 312), final = "points")
 #' @export
 
-final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede", "sm56684", "tm29778"), points = c(94, 90, 87, 84, 80, 77, 74, 70, 67, 64, 60), round = TRUE, drop_decimal = FALSE, full.out = TRUE, final = c("points", "score")){
+final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede", "sm56684", "tm29778"), points = c(94, 90, 87, 84, 80, 77, 74, 70, 67, 64, 60), round = TRUE, full.out = TRUE, final = c("points", "score")){
   #make sure final is set correctly
   if(length(final) > 1){
     stop("You must choose either 'points' or 'score' for the final variable.")
@@ -42,11 +42,6 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
 
    ## Dealing with grades
   points <- sort(c(points, Inf, 0), decreasing=F)
-  if(drop_decimal == TRUE){
-    gradebook$Grade_Based_on_Points <- as.numeric(substr(gradebook$`Final Points`, 1,3))
-    gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = F)
-  }
-
   if(round == TRUE){
     gradebook$Grade_Based_on_Points <- round(as.numeric(gradebook$`Final Points`))
     gradebook$letter <- num_to_letter(gradebook$Grade_Based_on_Points, cutpoints = points, round = T)
