@@ -4,6 +4,7 @@
 #'
 #' @param gradebook A gradebook dataframe
 #' @param non_enrolled A vector of EIDs of non-enrolled students
+#' @return A gradebook data frame with test and non-enrolled students removed, points possible line removed, periods removed from column names, and columns converted to numeric as appropriate
 #' @export
 
 gradebook_clean <- function(gradebook, non_enrolled = c()){
@@ -11,7 +12,7 @@ gradebook_clean <- function(gradebook, non_enrolled = c()){
 
   # test.student
   elim_stud <- test.student(EIDs = non_enrolled, df = gb)
-  es <- ifelse(length(elim_stud) == 0, F, T)
+  es <- ifelse((length(elim_stud) == 0), F, T)
   if(length(elim_stud) != 0){
     gb <- gb[-elim_stud,]
   }
@@ -28,7 +29,9 @@ gradebook_clean <- function(gradebook, non_enrolled = c()){
   }
 
   # convert to numeric
-  gb <- as.data.frame(apply(gb, 2, maybe_as_numeric))
+  for(i in 1:ncol(gb)){
+    gb[[i]] <- maybe_as_numeric(gb[[i]])
+  }
 
   # make sure grade columns don't contain periods
   names(gb) <- gsub("\\.", " ", names(gb))
