@@ -12,19 +12,22 @@ scantron_grade <- function(gb, scantron, assignment_name){
   n_columns <- ncol(gb)
   assignment_column <- grep(assignment_name, names(gb))
   df_names <- names(gb)
+
   # clean gb
   clean_gb <- gradebook_clean(gb, non_enrolled = c("speede", "sm56684", "tm29778"))
   gb <- clean_gb[[1]]
+
   # remove unnecessary lines from scantron if present
-  scantron <- scantron %>%
-    filter(`Last Name` != "Total Records Read") %>%
-    select(EID, Score)
+  scantron <- scantron[which(scantron$`Last Name` != "Total Records Read"), c("EID", "Score")]
+
   # make compatible to merge
   names(scantron) <- c("SIS User ID", "new_val")
   scantron[,1] <- tolower(as.character(scantron[,1]))
   scantron[,1] <- gsub(" ", "", scantron[,1])
+
   # merge by EID
-  gb <- suppressWarnings(full_join(gb, scantron))
+  gb <- merge(gb, scantron, all = T, by = "SIS User ID")
+
   # heart of the function
   gb <- apply(gb, 1, function(dat){
     if(is.na(dat[assignment_column]) == T){

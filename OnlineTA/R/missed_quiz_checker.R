@@ -28,7 +28,7 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
   col_number <- grep(assignment_column_name, names(current_gb)) #translate assignment name to column number
 
   gb_eid <- names(current_gb)[3] #get column name on eid column in gb
-  track <- dplyr::full_join(track, current_gb[,c(1:5, col_number)], by = c("EID" = gb_eid)) #merge data frames
+  track <- merge(track, current_gb[,c(1:5, col_number)], by.x = "EID", by.y = "gb_eid", all = T) #merge data frames
   new_stud <- which(is.na(track$previous_missed))
   if(length(new_stud) > 0 & length(new_stud) < nrow(track)){
     track$previous_missed[new_stud] <- 0
@@ -38,8 +38,8 @@ track_students <- function(tracker_path, output_path, roster, current_gb, assign
     write.csv(new_stud_df, file = "New_Students_Since_Last_Assignment.csv")
   }
   t_col_num <- as.numeric(length(names(track)))
-  track$current_missed[is.na(track[t_col_num])==T] <- track$current_missed[is.na(track[t_col_num])==T] + 1
-  track <- track[,1:5]
+  track$current_missed[is.na(track[t_col_num]) == T] <- track$current_missed[is.na(track[t_col_num]) == T] + 1
+  track <- track[, 1:5]
   new_missed <- track[which(track$current_missed != track$previous_missed),]
   write.csv(track, file = tracker_path)
   write.csv(new_missed, file = output_path)

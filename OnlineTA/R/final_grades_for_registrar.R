@@ -33,9 +33,9 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
 
   # Creating a vector of scores based on points or score
   if(final %in% c("points", "point", "Points", "Point", "p", "P")){
-    gradebook$final_num <- as.numeric(as.character(gradebook$`Final Points`))
+    gradebook$final_num <- gradebook$`Final Points`
   }else if(final %in% c("score", "scores", "Score", "score", "S", "s")){
-    gradebook$final_num <- as.numeric(as.character(gradebook$`Final Score`))
+    gradebook$final_num <- gradebook$`Final Score`
   }else{
     stop("You must set parameter 'final' to either 'points' or 'score' to indicate which column to use to assign final grades.\n Final grades not exported.")
   }
@@ -67,7 +67,7 @@ final.grades <- function(gradebook, class = "GOV310L", non.enrolled = c("speede"
   }
   gradebook <- subset(gradebook, select=c("Student", "SIS User ID", "letter", "absences", "remarks", "unique"))
   #rename to match registrar requirements
-  colnames(gradebook)<- c("Name", "EID", "Grade", "Absences", "Remarks", "Unique")
+  colnames(gradebook) <- c("Name", "EID", "Grade", "Absences", "Remarks", "Unique")
   #export the results
   dir.create("Final Grades -- Registrar Formatting")
   write.table(gradebook, file = paste(getwd(), "Final Grades -- Registrar Formatting", "FinalGradeSubmission.txt", sep="/"), sep = "\t", row.names = F, na = "", quote = F, eol = "\r\n")

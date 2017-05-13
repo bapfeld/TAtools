@@ -10,7 +10,7 @@
 #' @export
 
 
-random_attendance <- function(piazza_survey, days=c("Monday", "Wednesday"), student_count = 25, ignore_list = c()) {
+random_attendance <- function(piazza_survey, days = c("Monday", "Wednesday"), student_count = 25, ignore_list = c()) {
   attendance <- piazza_survey[1:(nrow(piazza_survey)-3),] #modify this line for alternative data sources
   #remove students from ignore list if present
   if(length(ignore_list > 0)){
@@ -25,8 +25,8 @@ random_attendance <- function(piazza_survey, days=c("Monday", "Wednesday"), stud
     stop
   }
   shuffled <- attendance[sample(nrow(attendance)),]
-  shuffled <- shuffled[1:2*student_count,1:2]
+  shuffled <- shuffled[1:2*student_count, 1:2]
   shuffled$day[1:student_count] <- days[1]
   shuffled$day[student_count+1:student_count*2] <- days[2]
-  write.csv(shuffled, file="~/Desktop/randomized_attendance_list.csv")
+  write.csv(shuffled, file = "~/Desktop/randomized_attendance_list.csv")
 }

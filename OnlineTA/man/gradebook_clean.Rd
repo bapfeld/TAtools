@@ -11,6 +11,9 @@ gradebook_clean(gradebook, non_enrolled = c())
 
 \item{non_enrolled}{A vector of EIDs of non-enrolled students}
 }
+\value{
+A gradebook data frame with test and non-enrolled students removed, points possible line removed, periods removed from column names, and columns converted to numeric as appropriate
+}
 \description{
 Clean up a gradebook all in one fell swoop
 }

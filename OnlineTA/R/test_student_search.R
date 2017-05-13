@@ -15,16 +15,16 @@ test.student <- function(EIDs=c("speede", "sm56684", "tm29778"), df){
   #eliminate universal class test student
   temp2 <- which(apply(df, 1, function(x) any(grepl("Student, Test", x))))
   out <- as.numeric(c(out, temp2))
-  if (length(out)==0){
+  if (length(out) == 0){
     out
   } else {for (j in 1:length(out)){ #loop to eliminate 0s if eids were not found
-    if (out[j]==0){
+    if (out[j] == 0){
       out <- out[-j]
     }
   }
     #eliminate duplicated
     d <- duplicated(out)
-    out <- out[d==FALSE]
+    out <- out[d == FALSE]
     out
   }
 }

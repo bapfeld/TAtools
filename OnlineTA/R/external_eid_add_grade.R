@@ -7,21 +7,21 @@
 #' @param point_value   The number of points that should be awarded for completing the assignment.
 #' @param missing_as_zero  Logical for whether students not included in the EID vector should be assigned a 0. Default is TRUE.
 #' @param ignore_length   Default is FALSE. If TRUE, then function will not check the length of your EIDs. Checking length is useful if students entered their own EIDs. Default minimum is < 5 will throw a warning. It is possible for a student to have a 4 character EID.
-#' @return Outputs an updated gradebook file. Note: R will convert () into "."s.  This will result in a file that Canvas will not accept. Copy/paste the single column as appropriate in a program outside of R and upload the same file that was downloaded. Also automatically outputs a warning message reporting which assignment you updated.
+#' @return Outputs an updated gradebook file. Note: Depending on how you imported the gradebook, R may convert () into "."s.  This will result in a file that Canvas will not accept. Copy/paste the single column as appropriate in a program outside of R and upload the same file that was downloaded. Also automatically outputs a warning message reporting which assignment you updated. Importing using rio::import("path_to_file.csv") and exporting with rio::export(gb, file = "path_to_file.csv") is recommended to avoid these problems.
 #' @export
 
-Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, point_value, missing_as_zero = TRUE, ignore_length=FALSE){
+Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, point_value, missing_as_zero = TRUE, ignore_length = FALSE){
   q_vec <- levels(qualtrics_vector)
-  if(length(which(q_vec=="userid")) != 0){
-    q_vec <- q_vec[-which(q_vec=="userid")]
+  if(length(which(q_vec == "userid")) != 0){
+    q_vec <- q_vec[-which(q_vec == "userid")]
   }
   col_num <- assignment_col_number
   stud.row <- c()
-  clean_gradebook <- gradebook_clean(gradebook, non_enrolled = c("speede", "sm56684", "tm29778"))
-  gradebook <- clean_gradebook[[1]]
+  clean_gb <- gradebook_clean(gradebook, non_enrolled = c("speede", "sm56684", "tm29778"))
+  gradebook <- clean_gb[[1]]
   if(any(sapply(q_vec, nchar) < 4)){
     warning("It looks like you have EIDs that are too short. Please double check the values in the vector of EIDs you are using.  If you are certain there are no errors, you may set the ignore_length option to TRUE", immediate. = TRUE)
-    if(ignore_length==FALSE){
+    if(ignore_length == FALSE){
       stop
     }
   }
@@ -35,5 +35,5 @@ Offline.grade <- function(qualtrics_vector, gradebook, assignment_col_number, po
     gradebook[-stud_points,col_num] <- 0
   }
   warning("You updated the assignment ", colnames(gradebook[assignment_col_number]), ". If this is incorrect, please verify you input the correct column number for the assignment.")
-  gradebook
+  return(gradebook)
 }

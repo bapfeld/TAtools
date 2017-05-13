@@ -9,40 +9,39 @@
 #' @examples
 #' assignment.choice(survey, roster, varnames=c("userid", "Q3", "Q5", "Q7"))
 #' @export
-assignment.choice <- function(survey.results, class.roster, varnames=c(), test.EIDs=c("speede", "sm56684", "tm29778")){
-  survey <- subset(survey.results, select=varnames)[-1,]
+assignment.choice <- function(survey.results, class.roster, varnames = c(), test.EIDs = c("speede", "sm56684", "tm29778")){
+  survey <- subset(survey.results, select = varnames)[-1,]
   colnames(survey) <- c("EID", "Last Name", "First Name", "Essay Choice")
   roster_clean <- gradebook_clean(class.roster, non_enrolled = test.EIDs)
   roster <- roster_clean[[1]]
-  roster <- roster %>%
-    select(`SIS User ID`, ID, Student)
+  roster <- roster[,c("SIS User ID", "ID", "Student")]
   colnames(roster) <- c("EID", "ID", "Student")
   #Now, merge the two of them
-  merged.data <- merge(roster, survey, by="EID", all.x=T)
-  dup <- subset(merged.data, select=c("EID", "ID"))
-  dup$duplicate <- duplicated(dup) | duplicated(dup, fromLast=TRUE)
+  merged.data <- merge(roster, survey, by = "EID", all.x = T)
+  dup <- subset(merged.data, select = c("EID", "ID"))
+  dup$duplicate <- duplicated(dup) | duplicated(dup, fromLast = TRUE)
   dup <- dup[!duplicated(dup),]
-  essay <- merge(merged.data, dup, by=c("EID", "ID"))
+  essay <- merge(merged.data, dup, by = c("EID", "ID"))
   #Finally, eliminate any identical responses
   essay$ed <- FALSE
   for (i in 1:(nrow(essay)-1)){
-    if (essay$ID[i]==essay$ID[i+1]){
-      if(essay$"Essay Choice"[i]==essay$"Essay Choice"[i+1]){
+    if (essay$ID[i] == essay$ID[i+1]){
+      if(essay$`Essay Choice`[i] == essay$`Essay Choice`[i+1]){
         essay$duplicate[i] <- FALSE
         essay$ed[i+1] <- TRUE
       }
     }
   }
-  essay <- essay[essay$ed==FALSE,-8]
-  duplicated.essays <- essay[essay$duplicate==TRUE,] #possible there are none
-  missing.essays <- subset(essay, is.na(essay$"Essay Choice"))
+  essay <- essay[essay$ed == FALSE, -8]
+  duplicated.essays <- essay[essay$duplicate == TRUE,] #possible there are none
+  missing.essays <- subset(essay, is.na(essay$`Essay Choice`))
   #write the output to a new folder
   time <- Sys.time()
   folder.name <- paste("Assignment Choice", time)
   dir.create(folder.name)
-  write.csv(duplicated.essays, file=paste(getwd(), folder.name, "duplicated responses.csv", sep="/"))
-  write.csv(missing.essays, file=paste(getwd(), folder.name, "missing responses.csv", sep="/"))
-  write.csv(essay, file=paste(getwd(), folder.name, "all responses.csv", sep="/"))
+  write.csv(duplicated.essays, file = paste(getwd(), folder.name, "duplicated responses.csv", sep = "/"))
+  write.csv(missing.essays, file = paste(getwd(), folder.name, "missing responses.csv", sep = "/"))
+  write.csv(essay, file = paste(getwd(), folder.name, "all responses.csv", sep = "/"))
 }
 
 

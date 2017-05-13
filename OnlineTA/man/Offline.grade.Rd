@@ -21,7 +21,7 @@ Offline.grade(qualtrics_vector, gradebook, assignment_col_number, point_value,
 \item{ignore_length}{Default is FALSE. If TRUE, then function will not check the length of your EIDs. Checking length is useful if students entered their own EIDs. Default minimum is < 5 will throw a warning. It is possible for a student to have a 4 character EID.}
 }
 \value{
-Outputs an updated gradebook file. Note: R will convert () into "."s.  This will result in a file that Canvas will not accept. Copy/paste the single column as appropriate in a program outside of R and upload the same file that was downloaded. Also automatically outputs a warning message reporting which assignment you updated.
+Outputs an updated gradebook file. Note: Depending on how you imported the gradebook, R may convert () into "."s.  This will result in a file that Canvas will not accept. Copy/paste the single column as appropriate in a program outside of R and upload the same file that was downloaded. Also automatically outputs a warning message reporting which assignment you updated. Importing using rio::import("path_to_file.csv") and exporting with rio::export(gb, file = "path_to_file.csv") is recommended to avoid these problems.
 }
 \description{
 Use this function to add grades in a canvas gradebook for a complete/incomplete assignment based on a list of EIDs.
