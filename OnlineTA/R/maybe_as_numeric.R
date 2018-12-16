@@ -5,7 +5,9 @@
 #' @param v A gradebook dataframe
 
 maybe_as_numeric <- function(v){
-  v <- ifelse(is.factor(v), as.character(v), v)
+  if (is.factor(v)){
+    v <- as.character(v)
+  }
   if (is(tryCatch(as.numeric(v),
                   warning = function(w) w),
          "warning")){

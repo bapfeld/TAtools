@@ -1,7 +1,7 @@
 Package: OnlineTA
 Title: Contains tools for processing data for the online courses at the
     University of Texas at Austin
-Version: 1.1.4
+Version: 1.1.5
 Authors@R: person("Brendan", "Apfeld", email = "brendan.apfeld@utexas.edu", role = c("aut", "cre"))
 Description: This package contains a number of tools useful to TAs and AIs at the University of Texas at Austin.
 Depends:
